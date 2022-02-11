@@ -1,5 +1,6 @@
 package pers.machi.dag;
 
+import com.google.gson.annotations.Expose;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,8 +15,12 @@ public class DAGx<N extends Node> {
     public HashSet<N> isolatedNodes = new HashSet<>();
     public HashMap<N, Indegree> indegreeMap = new HashMap<>();
 
-    public static class Edge<N> {
+    public static class Edge<N extends Node> {
+        @Expose
+
         N src;
+        @Expose
+
         N tgt;
         Object properties;
 
@@ -61,7 +66,7 @@ public class DAGx<N extends Node> {
             for (DAGx.Edge<N> edge : edges) {
                 adjacentList.computeIfAbsent(edge.src, k -> new HashMap<>());
                 adjacentList.get(edge.src).put(edge.tgt, edge.properties);
-                indegreeMap.computeIfAbsent(edge.tgt,k-> new Indegree());
+                indegreeMap.computeIfAbsent(edge.tgt, k -> new Indegree());
                 indegreeMap.get(edge.tgt).increase();
 
                 nodeWithConnection.add(edge.src);

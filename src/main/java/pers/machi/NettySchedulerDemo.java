@@ -1,5 +1,6 @@
 package pers.machi;
 
+import pers.machi.flow.FlowRegistry;
 import pers.machi.server.NettyHttpServerSingleton;
 import pers.machi.urimapper.UriMapperManagement;
 
@@ -11,5 +12,9 @@ public class NettySchedulerDemo {
         NettyHttpServerSingleton.getInstance().run();
 
 
+    }
+
+    public static void contextPreparation() {
+        FlowRegistry.init();
     }
 }
