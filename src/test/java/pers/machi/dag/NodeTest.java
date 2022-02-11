@@ -1,9 +1,10 @@
 package pers.machi.dag;
 
-public class Node {
-    public int id;
 
-    public Node(int i) {
+import java.util.Optional;
+
+public class NodeTest extends Node {
+    public NodeTest(int i) {
         id = i;
     }
 
