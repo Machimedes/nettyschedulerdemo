@@ -48,6 +48,8 @@ public class FlowRegistry {
     }
 
     private class MessageLoop extends Thread {
+        private MessageLoop() {
+        }
 
         @Override
         public void run() {
@@ -61,7 +63,7 @@ public class FlowRegistry {
 
                 if (message instanceof FlowStartMessage) {
                     logger.warn(message);
-                   ((FlowStartMessage) message).flow.initDagx();
+                    ((FlowStartMessage) message).flow.initDagx();
                     ((FlowStartMessage) message).flow.start();
                 }
             }

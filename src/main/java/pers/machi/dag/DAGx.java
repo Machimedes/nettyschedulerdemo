@@ -4,10 +4,7 @@ import com.google.gson.annotations.Expose;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DAGx<N extends Node> {
@@ -87,26 +84,31 @@ public class DAGx<N extends Node> {
 
         // dfs to detect cycle in adjacentList
         public void detectCycle(HashMap<N, HashMap<N, Object>> adjacentList) {
+            Stack<N> visitedNodeStack = new Stack<>();
             nodeWithConnection.stream()
                     .sorted((n, t1) -> -n.id + t1.id)
                     .filter(e -> !e.isVisited)
                     .forEach(e ->
-                            dfs(adjacentList, e, e, cycleCounter));
+                            dfs(adjacentList, e, cycleCounter, visitedNodeStack));
         }
 
         // dfs from specified source node, this source node also used as the root node for this dfs span tree.
-        void dfs(HashMap<N, HashMap<N, Object>> adjacentList, N src, final N root, AtomicInteger cycleCounter) {
+        void dfs(HashMap<N, HashMap<N, Object>> adjacentList, N src, AtomicInteger cycleCounter, Stack<N> visitedNodeStack) {
             src.isVisited = true;
-            src.root = root;
-            if (adjacentList.get(src) != null)
+            visitedNodeStack.push(src);
+            if (adjacentList.get(src) != null) {
                 adjacentList.get(src).keySet()
                         .forEach(e ->
                         {
-                            if (!e.isVisited)
-                                dfs(adjacentList, e, root, cycleCounter);
-                            else if (e.root == root)
+                            if (!visitedNodeStack.contains(e))
+                                dfs(adjacentList, e, cycleCounter, visitedNodeStack);
+                            else {
                                 cycleCounter.getAndIncrement();
+                                System.out.println(visitedNodeStack);
+                            }
                         });
+            }
+            visitedNodeStack.pop();
         }
 
     }

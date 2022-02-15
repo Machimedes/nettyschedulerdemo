@@ -7,7 +7,7 @@ import pers.machi.urimapper.UriMapperManagement;
 public class NettySchedulerDemo {
 
     public static void main(String[] args) {
-
+        contextPreparation();
         final UriMapperManagement uriMappingManagement = UriMapperManagement.getInstance();
         NettyHttpServerSingleton.getInstance().run();
 
