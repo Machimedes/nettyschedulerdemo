@@ -2,13 +2,9 @@ package pers.machi.dag;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
 import pers.machi.task.FakeTask;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 
@@ -26,10 +22,10 @@ public class JSONSerializeTest {
         nodes.add(ft4);
 
 
-        HashSet<DAGx.Edge<FakeTask>> edges = new HashSet<>();
-        DAGx.Edge<FakeTask> e1 = new DAGx.Edge<FakeTask>(ft1, ft2, null);
-        DAGx.Edge<FakeTask> e2 = new DAGx.Edge<FakeTask>(ft1, ft3, null);
-        DAGx.Edge<FakeTask> e3 = new DAGx.Edge<FakeTask>(ft2, ft3, null);
+        HashSet<DAG.Edge<FakeTask>> edges = new HashSet<>();
+        DAG.Edge<FakeTask> e1 = new DAG.Edge<FakeTask>(ft1, ft2, null);
+        DAG.Edge<FakeTask> e2 = new DAG.Edge<FakeTask>(ft1, ft3, null);
+        DAG.Edge<FakeTask> e3 = new DAG.Edge<FakeTask>(ft2, ft3, null);
 
         edges.add(e1);
         edges.add(e2);
@@ -49,11 +45,11 @@ public class JSONSerializeTest {
                 .create();
         Type nodesType = new TypeToken<HashSet<FakeTask>>() {
         }.getType();
-        Type edgesType = new TypeToken<HashSet<DAGx.Edge<FakeTask>>>() {
+        Type edgesType = new TypeToken<HashSet<DAG.Edge<FakeTask>>>() {
         }.getType();
 
         HashSet<FakeTask> nodesx = gson.fromJson(nodesDefine, nodesType);
-        HashSet<DAGx.Edge<FakeTask>> edgesx = gson.fromJson(edgesDefine, edgesType);
+        HashSet<DAG.Edge<FakeTask>> edgesx = gson.fromJson(edgesDefine, edgesType);
 
         System.out.println(nodesx);
         System.out.println(edgesx);

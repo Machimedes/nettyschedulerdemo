@@ -5,8 +5,9 @@ import org.apache.logging.log4j.Logger;
 import pers.machi.message.FlowStartMessage;
 import pers.machi.message.Message;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class FlowRegistry {
@@ -16,7 +17,9 @@ public class FlowRegistry {
     private LinkedBlockingDeque<Message> inbox = new LinkedBlockingDeque<>();
     private MessageLoop messageLoop = this.new MessageLoop();
 
-    private final HashSet<Flow<?>> flowList = new HashSet<>();
+    private ExecutorService flowContext = Executors.newFixedThreadPool(5);
+
+    private final HashMap<Flow<?>, Future<?>> flowList = new HashMap<>();
     private static final FlowRegistry instance = new FlowRegistry();
 
     private FlowRegistry() {
@@ -34,12 +37,11 @@ public class FlowRegistry {
     public void addFlow(Flow<?> flow) {
         try {
             lock.lock();
-            flowList.add(flow);
+            flowList.put(flow, null);
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             lock.unlock();
-
         }
     }
 
@@ -67,6 +69,17 @@ public class FlowRegistry {
                     ((FlowStartMessage) message).flow.start();
                 }
             }
+        }
+    }
+
+    public void submit(FlowDispatcher flowDispatcher) {
+        try {
+            lock.lock();
+            flowList.put(flowDispatcher.flow, flowContext.submit(flowDispatcher));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            lock.unlock();
         }
     }
 

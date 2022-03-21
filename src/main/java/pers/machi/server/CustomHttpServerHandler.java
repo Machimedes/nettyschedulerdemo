@@ -1,6 +1,8 @@
 package pers.machi.server;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -21,7 +23,7 @@ import java.util.Map;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
-public class CustomHttpServerHandler extends SimpleChannelInboundHandler {
+public class CustomHttpServerHandler extends SimpleChannelInboundHandler<Object> {
     private final Logger logger = LogManager.getLogger(CustomHttpServerHandler.class);
     private HttpRequest request;
 
@@ -57,6 +59,8 @@ public class CustomHttpServerHandler extends SimpleChannelInboundHandler {
             HttpContent httpContent = (HttpContent) msg;
             RequestUtils.extractBody(httpContent, content);
             if (msg instanceof LastHttpContent) {
+                logger.error(content);
+
                 trailer = (LastHttpContent) msg;
 
                 // invoke method by uri mapper
@@ -71,8 +75,6 @@ public class CustomHttpServerHandler extends SimpleChannelInboundHandler {
                     writeQuickResponse(ctx, NOT_FOUND);
             }
         }
-
-
     }
 
     private void writeQuickResponse(ChannelHandlerContext ctx, HttpResponseStatus status) {

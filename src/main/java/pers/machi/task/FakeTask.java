@@ -14,7 +14,7 @@ public class FakeTask extends Task {
     }
 
     @Override
-    void run() {
+    public void run() {
 
         logger.warn("task " + id + "started");
         try {

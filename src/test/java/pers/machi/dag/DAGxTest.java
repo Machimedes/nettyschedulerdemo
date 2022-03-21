@@ -41,20 +41,20 @@ public class DAGxTest {
         nodes.add(n15);
 
 
-        DAGx.Edge<Node> e1 = new DAGx.Edge<>(n1, n2, null);
-        DAGx.Edge<Node> e2 = new DAGx.Edge<>(n2, n3, null);
-        DAGx.Edge<Node> e3 = new DAGx.Edge<>(n3, n4, null);
-        DAGx.Edge<Node> e4 = new DAGx.Edge<>(n4, n1, null);
-        DAGx.Edge<Node> e5 = new DAGx.Edge<>(n1, n5, null);
-        DAGx.Edge<Node> e6 = new DAGx.Edge<>(n6, n5, null);
+        DAG.Edge<Node> e1 = new DAG.Edge<>(n1, n2, null);
+        DAG.Edge<Node> e2 = new DAG.Edge<>(n2, n3, null);
+        DAG.Edge<Node> e3 = new DAG.Edge<>(n3, n4, null);
+        DAG.Edge<Node> e4 = new DAG.Edge<>(n4, n1, null);
+        DAG.Edge<Node> e5 = new DAG.Edge<>(n1, n5, null);
+        DAG.Edge<Node> e6 = new DAG.Edge<>(n6, n5, null);
 
-        DAGx.Edge<Node> e7 = new DAGx.Edge<>(n6, n7, null);
-        DAGx.Edge<Node> e8 = new DAGx.Edge<>(n7, n8, null);
-        DAGx.Edge<Node> e9 = new DAGx.Edge<>(n8, n6, null);
-        DAGx.Edge<Node> e10 = new DAGx.Edge<>(n2, n4, null);
+        DAG.Edge<Node> e7 = new DAG.Edge<>(n6, n7, null);
+        DAG.Edge<Node> e8 = new DAG.Edge<>(n7, n8, null);
+        DAG.Edge<Node> e9 = new DAG.Edge<>(n8, n6, null);
+        DAG.Edge<Node> e10 = new DAG.Edge<>(n2, n4, null);
 
 
-        Collection<DAGx.Edge<Node>> edges = new HashSet<>();
+        Collection<DAG.Edge<Node>> edges = new HashSet<>();
         edges.add(e1);
         edges.add(e2);
         edges.add(e3);
@@ -66,8 +66,8 @@ public class DAGxTest {
         edges.add(e9);
         edges.add(e10);
 
-        DAGx.DAGxBuilder<Node> daGxBuilder = DAGx.DAGxBuilder.builder();
-        DAGx<Node> dagx = daGxBuilder.addEdges(edges).addNodes(nodes).build();
+        DAG.DAGxBuilder<Node> daGxBuilder = DAG.DAGxBuilder.builder();
+        DAG<Node> dagx = daGxBuilder.addEdges(edges).addNodes(nodes).build();
         System.out.println(dagx.adjacentList);
         System.out.println(dagx.isolatedNodes);
     }

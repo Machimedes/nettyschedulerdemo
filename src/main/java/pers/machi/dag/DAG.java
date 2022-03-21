@@ -7,17 +7,16 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DAGx<N extends Node> {
+public class DAG<N extends Node> {
     public HashMap<N, HashMap<N, Object>> adjacentList = new HashMap<>();
     public HashSet<N> isolatedNodes = new HashSet<>();
     public HashMap<N, Indegree> indegreeMap = new HashMap<>();
 
     public static class Edge<N extends Node> {
         @Expose
-
         N src;
-        @Expose
 
+        @Expose
         N tgt;
         Object properties;
 
@@ -37,7 +36,7 @@ public class DAGx<N extends Node> {
         private final Logger logger = LogManager.getLogger(DAGxBuilder.class);
 
         private HashSet<N> nodes = new HashSet<>();
-        private HashSet<DAGx.Edge<N>> edges = new HashSet<>();
+        private HashSet<DAG.Edge<N>> edges = new HashSet<>();
         HashSet<N> nodeWithConnection = new HashSet<>();
         AtomicInteger cycleCounter = new AtomicInteger(0);
 
@@ -55,12 +54,12 @@ public class DAGx<N extends Node> {
             return this;
         }
 
-        public DAGx<N> build() {
-            DAGx<N> dagx = new DAGx<>();
+        public DAG<N> build() {
+            DAG<N> dagx = new DAG<>();
             HashMap<N, HashMap<N, Object>> adjacentList = dagx.adjacentList;
             HashMap<N, Indegree> indegreeMap = dagx.indegreeMap;
 
-            for (DAGx.Edge<N> edge : edges) {
+            for (DAG.Edge<N> edge : edges) {
                 adjacentList.computeIfAbsent(edge.src, k -> new HashMap<>());
                 adjacentList.get(edge.src).put(edge.tgt, edge.properties);
                 indegreeMap.computeIfAbsent(edge.tgt, k -> new Indegree());

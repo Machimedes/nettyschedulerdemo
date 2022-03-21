@@ -5,6 +5,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message" + id;
+        return this.getClass().getName() + id;
     }
 }
