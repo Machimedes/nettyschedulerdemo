@@ -7,7 +7,12 @@ import pers.machi.task.Task;
 public class TaskFinishMessage extends Message {
     public Task task;
 
-    public TaskFinishMessage(FakeTask fakeTask) {
+    public TaskFinishMessage(Task task) {
         this.task = task;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskFinishMessage: " + task.id;
     }
 }

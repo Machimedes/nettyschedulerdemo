@@ -6,7 +6,6 @@ import pers.machi.message.FlowStartMessage;
 import pers.machi.message.Message;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -14,12 +13,10 @@ public class FlowRegistry {
     private final Logger logger = LogManager.getLogger(FlowRegistry.class);
 
     private final ReentrantLock lock = new ReentrantLock();
-    private LinkedBlockingDeque<Message> inbox = new LinkedBlockingDeque<>();
-    private MessageLoop messageLoop = this.new MessageLoop();
+    private final LinkedBlockingDeque<Message> inbox = new LinkedBlockingDeque<>();
+    private final MessageLoop messageLoop = this.new MessageLoop();
 
-    private ExecutorService flowContext = Executors.newFixedThreadPool(5);
-
-    private final HashMap<Flow<?>, Future<?>> flowList = new HashMap<>();
+    private final HashMap<Flow<?>, Future<?>> flows = new HashMap<>();
     private static final FlowRegistry instance = new FlowRegistry();
 
     private FlowRegistry() {
@@ -37,7 +34,7 @@ public class FlowRegistry {
     public void addFlow(Flow<?> flow) {
         try {
             lock.lock();
-            flowList.put(flow, null);
+            flows.put(flow, null);
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
@@ -64,7 +61,6 @@ public class FlowRegistry {
                 }
 
                 if (message instanceof FlowStartMessage) {
-                    logger.warn(message);
                     ((FlowStartMessage) message).flow.initDagx();
                     ((FlowStartMessage) message).flow.start();
                 }
@@ -72,10 +68,10 @@ public class FlowRegistry {
         }
     }
 
-    public void submit(FlowDispatcher flowDispatcher) {
+    public void submit(Flow flow) {
         try {
             lock.lock();
-            flowList.put(flowDispatcher.flow, flowContext.submit(flowDispatcher));
+            flows.put(flow, flow.flowContext.submit(new FlowDispatcher(flow)));
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {

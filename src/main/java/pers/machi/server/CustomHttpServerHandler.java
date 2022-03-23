@@ -59,7 +59,6 @@ public class CustomHttpServerHandler extends SimpleChannelInboundHandler<Object>
             HttpContent httpContent = (HttpContent) msg;
             RequestUtils.extractBody(httpContent, content);
             if (msg instanceof LastHttpContent) {
-                logger.error(content);
 
                 trailer = (LastHttpContent) msg;
 

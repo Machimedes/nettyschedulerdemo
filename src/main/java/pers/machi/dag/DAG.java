@@ -30,6 +30,19 @@ public class DAG<N extends Node> {
         public String toString() {
             return "Edge " + src + "->" + tgt;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Edge<?> edge = (Edge<?>) o;
+            return Objects.equals(src, edge.src) && Objects.equals(tgt, edge.tgt);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(src, tgt);
+        }
     }
 
     public static class DAGxBuilder<N extends Node> {
@@ -55,30 +68,31 @@ public class DAG<N extends Node> {
         }
 
         public DAG<N> build() {
-            DAG<N> dagx = new DAG<>();
-            HashMap<N, HashMap<N, Object>> adjacentList = dagx.adjacentList;
-            HashMap<N, Indegree> indegreeMap = dagx.indegreeMap;
+            DAG<N> dag = new DAG<>();
+            HashMap<N, HashMap<N, Object>> adjacentList = dag.adjacentList;
+            HashMap<N, Indegree> indegreeMap = dag.indegreeMap;
 
             for (DAG.Edge<N> edge : edges) {
                 adjacentList.computeIfAbsent(edge.src, k -> new HashMap<>());
                 adjacentList.get(edge.src).put(edge.tgt, edge.properties);
                 indegreeMap.computeIfAbsent(edge.tgt, k -> new Indegree());
+                indegreeMap.computeIfAbsent(edge.src, k -> new Indegree());
                 indegreeMap.get(edge.tgt).increase();
 
                 nodeWithConnection.add(edge.src);
                 nodeWithConnection.add(edge.tgt);
             }
 
-            logger.warn(indegreeMap);
-            detectCycle(dagx.adjacentList);
+            detectCycle(dag.adjacentList);
             if (cycleCounter.get() > 0) {
                 logger.warn("cycle detected: " + cycleCounter.get());
                 return null;
             }
 
             nodes.removeAll(nodeWithConnection);
-            dagx.isolatedNodes.addAll(nodes);
-            return dagx;
+
+            dag.isolatedNodes.addAll(nodes);
+            return dag;
         }
 
         // dfs to detect cycle in adjacentList

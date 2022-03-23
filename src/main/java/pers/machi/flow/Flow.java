@@ -9,7 +9,6 @@ import pers.machi.dag.Node;
 import pers.machi.message.FlowStartMessage;
 import pers.machi.message.Message;
 import pers.machi.task.FakeTask;
-import pers.machi.urimapper.FlowMapper;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -21,9 +20,10 @@ public class Flow<Task extends Node> {
     private final Logger logger = LogManager.getLogger(Flow.class);
 
     DAG<Task> dag;
-    LinkedBlockingDeque<Message> inbox;
+    public LinkedBlockingDeque<Message> inbox;
     String flowDefine;
     FlowRegistry fr = FlowRegistry.getInstance();
+    FlowContext flowContext = new FlowContext();
 
     public Flow(String flowDefine) {
         this.flowDefine = flowDefine;
@@ -43,9 +43,6 @@ public class Flow<Task extends Node> {
         String nodesDefine = flowDefine.split("&")[0];
         String edgesDefine = flowDefine.split("&")[1];
 
-        logger.error(nodesDefine);
-        logger.error(edgesDefine);
-
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
@@ -60,10 +57,14 @@ public class Flow<Task extends Node> {
         DAG.DAGxBuilder<Task> dagxBuilder = DAG.DAGxBuilder.builder();
 
         dag = dagxBuilder.addNodes(nodes).addEdges(edges).build();
+        logger.error("dag.adjacentList: " + dag.adjacentList);
+        logger.error("dag.isolatedNodes: " + dag.isolatedNodes);
+        logger.error("dag.indegreeMap: " + dag.indegreeMap);
+
     }
 
     public void start() {
-        fr.submit(new FlowDispatcher(this));
+        fr.submit(this);
     }
 
 

@@ -7,26 +7,29 @@ import pers.machi.server.CustomHttpServerHandler;
 
 public class FakeTask extends Task {
 
-    private final Logger logger = LogManager.getLogger(FakeTask.class);
+    private static Logger logger = LogManager.getLogger(FakeTask.class);
 
     public FakeTask(int i) {
         id = i;
+
+
     }
 
-    @Override
-    public void run() {
-
-        logger.warn("task " + id + "started");
+    public Task run() {
+        logger.error("task " + id + " started");
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.warn("task " + id + "finished");
+        System.out.println("task " + id + " finished");
+        return this;
     }
+
 
     @Override
     public String toString() {
         return "FakeTask" + id;
     }
+
 }

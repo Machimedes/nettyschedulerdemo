@@ -49,7 +49,7 @@ public class NettyHttpServerSingleton {
                     p.addLast(new CustomHttpServerHandler());
                 }
             });
-            b.option(ChannelOption.SO_BACKLOG, 128);
+            b.option(ChannelOption.SO_BACKLOG, 16384);
             b.childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture f = b.bind(port).sync();
             f.channel().closeFuture().sync();

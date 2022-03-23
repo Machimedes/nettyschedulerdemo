@@ -53,6 +53,8 @@ public class DAGxTest {
         DAG.Edge<Node> e9 = new DAG.Edge<>(n8, n6, null);
         DAG.Edge<Node> e10 = new DAG.Edge<>(n2, n4, null);
 
+        System.out.println(e7.src==e9.tgt);
+
 
         Collection<DAG.Edge<Node>> edges = new HashSet<>();
         edges.add(e1);

@@ -1,10 +1,14 @@
 package pers.machi.flow;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class FlowContext {
-    private FlowContext() {
+    ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+
+    public FlowContext() {
+    }
+
+    Future<Integer> submit(Callable<Integer> callable) {
+        return singleThreadExecutor.submit(callable);
     }
 }
