@@ -12,6 +12,9 @@ import io.netty.handler.logging.LoggingHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Netty Http Server Singleton
+ */
 public class NettyHttpServerSingleton {
     private final Logger logger = LogManager.getLogger(NettyHttpServerSingleton.class);
     private int port = 12354;

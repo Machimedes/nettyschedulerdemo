@@ -15,6 +15,15 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * FlowDispatcher wraps a Flow and dispatch it.
+ * In call method, FlowDispatcher submit all task will no dependency.
+ * Submit task will run async and send back TaskFinishMessage to FlowDispatcher's message.
+ * In the loop, if new TaskFinishMessage received, remove dependency of this node and submit
+ * node with no dependency.
+ * This class extends Callable it should run in a separated thread. Most of time it call
+ * method will in blocking state.
+*/
 public class FlowDispatcher implements Callable<Integer> {
     private final Logger logger = LogManager.getLogger(FlowDispatcher.class);
     AtomicInteger finishedTaskCount = new AtomicInteger(0);

@@ -9,6 +9,7 @@ public class Node {
     public int id = -1;
     public boolean isVisited = false;
 
+    // important. Deserialized node object from json should be "equals" if they have same id number.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

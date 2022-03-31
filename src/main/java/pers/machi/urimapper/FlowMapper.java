@@ -13,6 +13,7 @@ import java.util.Map;
 public class FlowMapper {
     private final Logger logger = LogManager.getLogger(FlowMapper.class);
 
+    // annotate method with its uri
     @UriMethod(uri = "/flow/submit")
     public String flowSubmit(Map<String, List<String>> params, String content){
         Flow.createAndRegisterFlow(content);

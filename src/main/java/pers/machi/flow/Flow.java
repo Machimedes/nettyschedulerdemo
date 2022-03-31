@@ -39,6 +39,7 @@ public class Flow<Task extends Node> {
         fr.send(new FlowStartMessage(this));
     }
 
+    // create dag from Flow Definition Json.
     public void initDagx() {
         String nodesDefine = flowDefine.split("&")[0];
         String edgesDefine = flowDefine.split("&")[1];

@@ -18,6 +18,8 @@ public abstract class Task extends Node {
 
     public abstract Task run();
 
+    // task is submit into a global executor. Be careful, in real world there may be a few Flow but
+    // thousand of task.
     public void runAsync() {
         CompletableFuture<?> completableFuture = CompletableFuture.supplyAsync(
                 this::run, FlowDispatcher.taskexecutorService)

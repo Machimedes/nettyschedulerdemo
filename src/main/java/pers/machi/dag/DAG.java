@@ -7,8 +7,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// dependency model
 public class DAG<N extends Node> {
     public HashMap<N, HashMap<N, Object>> adjacentList = new HashMap<>();
+    // this set collects all node with no in edge and out edge.
     public HashSet<N> isolatedNodes = new HashSet<>();
     public HashMap<N, Indegree> indegreeMap = new HashMap<>();
 

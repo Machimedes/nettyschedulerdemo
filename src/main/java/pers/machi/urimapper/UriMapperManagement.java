@@ -12,6 +12,10 @@ import java.util.function.Predicate;
 
 import static pers.machi.common.MethodAccessUtil.getMethodsAnnotatedWith;
 
+/**
+ * While applicaton is stared, all UriMapper class should be injected into UriMapperManagement.
+ * This class manage all UriMapper's singleton instance, methods and corresponding uri.
+ */
 public class UriMapperManagement {
 
     private static UriMapperManagement instance;
